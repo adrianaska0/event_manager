@@ -267,23 +267,13 @@ def login_request_data():
         "email": "john.doe@example.com"
         }
 
-@pytest.fixture
-async def user_token(async_client):
-    user_data = UserCreate(
-        nickname="testuser",
-        email="testuser@example.com",
-        password="superStrongPassword!!!123",
-        first_name="Test",
-        last_name="User1"
-        )
+#normal user token
 
-    await async_client.post("/register/", json=user_data.dict())
-
-    response = await async_client.post("/login/", data={
-        "username": user_data.email,
-        "password": user_data.password
-    })
-
-    token_data = response.json()
-    return token_data["access_token"]
-        
+@pytest.fixture(scope="function")
+async def user_token(verified_user):
+    access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
+    token = create_access_token(
+        data={"sub": str(verified_user.id), "role": verified_user.role.value},
+        expires_delta=access_token_expires,
+    )
+    return token
