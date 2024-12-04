@@ -266,6 +266,8 @@ def login_request_data():
         "email": "john.doe@example.com"
         }
 
+#normal user token
+
 @pytest.fixture(scope="function")
 async def user_token(verified_user):
     access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
