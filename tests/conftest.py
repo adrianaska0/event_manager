@@ -277,3 +277,13 @@ async def user_token(verified_user):
         expires_delta=access_token_expires,
     )
     return token
+
+#manager user token
+@pytest.fixture(scope="function")
+async def manager_token(manager_user):
+    access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
+    token = create_access_token(
+        data={"sub": str(manager_user.id), "role": manager_user.role.value},
+        expires_delta=access_token_expires,
+    )
+    return token
