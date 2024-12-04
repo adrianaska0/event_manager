@@ -15,7 +15,7 @@ Fixtures:
 
 # Standard library imports
 from builtins import range
-from datetime import datetime, timedelta
+from datetime import datetime
 from unittest.mock import patch
 from uuid import uuid4
 
@@ -31,12 +31,12 @@ from faker import Faker
 from app.main import app
 from app.database import Base, Database
 from app.models.user_model import User, UserRole
-from app.dependencies import get_db, get_settings, get_email_service
+from app.dependencies import get_db, get_settings
 from app.utils.security import hash_password
 from app.utils.template_manager import TemplateManager
 from app.services.email_service import EmailService
 from app.services.jwt_service import create_access_token
-
+from app.schemas.user_schemas import UserCreate
 
 fake = Faker()
 
@@ -45,6 +45,7 @@ TEST_DATABASE_URL = settings.database_url.replace("postgresql://", "postgresql+a
 engine = create_async_engine(TEST_DATABASE_URL, echo=settings.debug)
 AsyncTestingSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 AsyncSessionScoped = scoped_session(AsyncTestingSessionLocal)
+
 
 @pytest.fixture
 def email_service():
@@ -266,11 +267,23 @@ def login_request_data():
         "email": "john.doe@example.com"
         }
 
-@pytest.fixture(scope="function")
-async def user_token(verified_user):
-    access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
-    token = create_access_token(
-        data={"sub": str(verified_user.id), "role": verified_user.role.value},
-        expires_delta=access_token_expires,
-    )
-    return token
+@pytest.fixture
+async def user_token(async_client):
+    user_data = UserCreate(
+        nickname="testuser",
+        email="testuser@example.com",
+        password="superStrongPassword!!!123",
+        first_name="Test",
+        last_name="User1"
+        )
+
+    await async_client.post("/register/", json=user_data.dict())
+
+    response = await async_client.post("/login/", data={
+        "username": user_data.email,
+        "password": user_data.password
+    })
+
+    token_data = response.json()
+    return token_data["access_token"]
+        
