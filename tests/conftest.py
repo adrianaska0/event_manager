@@ -36,6 +36,7 @@ from app.utils.security import hash_password
 from app.utils.template_manager import TemplateManager
 from app.services.email_service import EmailService
 from app.services.jwt_service import create_access_token
+from app.schemas.user_schemas import UserCreate
 
 fake = Faker()
 
@@ -265,3 +266,24 @@ def login_request_data():
         "password": "SecurePassword123!",
         "email": "john.doe@example.com"
         }
+
+@pytest.fixture
+async def user_token(async_client):
+    user_data = UserCreate(
+        nickname="testuser",
+        email="testuser@example.com",
+        password="superStrongPassword!!!123",
+        first_name="Test",
+        last_name="User1"
+        )
+
+    await async_client.post("/register/", json=user_data.dict())
+
+    response = await async_client.post("/login/", data={
+        "username": user_data.email,
+        "password": user_data.password
+    })
+
+    token_data = response.json()
+    return token_data["access_token"]
+        
