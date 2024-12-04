@@ -15,7 +15,7 @@ Fixtures:
 
 # Standard library imports
 from builtins import range
-from datetime import datetime
+from datetime import datetime, timedelta
 from unittest.mock import patch
 from uuid import uuid4
 
