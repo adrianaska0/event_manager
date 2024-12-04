@@ -25,7 +25,7 @@
 
 ## DockerHub 
 
-[adrianaska0/event_manager](https://hub.docker.com/repository/docker/adrianaska0/event_manager/general)
+[adrianaska0/event_manager](https://hub.docker.com/repository/docker/adrianaska0/event_manager/general)<br/>
 [image](https://hub.docker.com/layers/adrianaska0/event_manager/3d3565535dad34ac679e2ce6db00eb36bfd156a8/images/sha256-6da66226bacfb688a2d4472b3e857a125a673c9ed62e625892aa1fb0082d043e?context=repo)
 
 ## Reflection
