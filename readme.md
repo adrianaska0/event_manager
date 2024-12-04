@@ -26,6 +26,7 @@
 ## DockerHub 
 
 [adrianaska0/event_manager](https://hub.docker.com/repository/docker/adrianaska0/event_manager/general)
+[image](https://hub.docker.com/layers/adrianaska0/event_manager/3d3565535dad34ac679e2ce6db00eb36bfd156a8/images/sha256-6da66226bacfb688a2d4472b3e857a125a673c9ed62e625892aa1fb0082d043e?context=repo)
 
 ## Reflection
 Working as a QA Analyst is a very significant role in the software development process. In the process, I learned that each function of an application is very intricate and needs to undergo thorough testing before and after being pushed into a production environment. Sufficient edge cases should be tested to confirm the functions of something as simple as user authentication is robust. The environment in which these functions are tested is also importatnt. Although it is important to do testing locally, it is even more important to test in the cloud. In reality, applications are imaged, packaged, and live in a container in the cloud. <br/>
